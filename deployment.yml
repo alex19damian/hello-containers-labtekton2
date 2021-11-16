@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: labtekton-alext-pyxis
+  namespace: default
+  labels:
+     app: labtekton-alext-pyxis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: labtekton-alext-pyxis
+  template:
+    metadata:
+      labels:
+        app: labtekton-alext-pyxis
+    spec:
+      containers:
+      - name: labtekton-alext-pyxis
+        image: us.icr.io/default/<image>:<tag>
+        ports:
+          - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: svctekton-alext-pyxis
+  namespace: default
+spec:
+  type: ClusterIP
+  selector:
+    app: labtekton-alext-pyxis
+  ports:
+    - port: 8080
+      targetPort: 8080
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+    name: route-pyxis-alext-envars
+    namespace: default
+spec:
+    to:
+        kind: Service
+        name: svctekton-alext-pyxis
+
+
+
+
+
+
+
